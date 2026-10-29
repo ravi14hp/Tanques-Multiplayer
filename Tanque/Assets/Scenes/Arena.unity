@@ -376,6 +376,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DuelScreen
   statusText: {fileID: 1323742781}
   resultPanel: {fileID: 427167250}
+  menuPanel: {fileID: 376707643}
   resultLabel: {fileID: 1726036676}
 --- !u!1 &376707643
 GameObject:
@@ -394,7 +395,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &376707644
 RectTransform:
   m_ObjectHideFlags: 0

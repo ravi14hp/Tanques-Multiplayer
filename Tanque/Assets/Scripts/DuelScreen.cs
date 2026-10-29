@@ -5,28 +5,46 @@ public class DuelScreen : MonoBehaviour
 {
     [SerializeField] private TMP_Text statusText;
     [SerializeField] private GameObject resultPanel;
+    [SerializeField] private GameObject menuPanel;
     [SerializeField] private TMP_Text resultLabel;
 
     private void Start()
     {
         resultPanel.SetActive(false);
+        menuPanel.SetActive(true);
     }
 
-    private void Update()
+    void Update()
     {
-        DuelGame game = DuelGame.Current;
-        if (game == null)
+        if (DuelGame.Current == null)
+        {
             return;
+        }
 
-        if (game.GameOver)
+        if (DuelGame.Current.GameOver == true)
         {
             resultPanel.SetActive(true);
             statusText.text = "Duelo acabado";
-            resultLabel.text = game.Loser == game.Runner.LocalPlayer ? "VOCÊ NÃO!" : "VOCÊ GANHOU!";
+
+            if (DuelGame.Current.Loser == DuelGame.Current.Runner.LocalPlayer)
+            {
+                resultLabel.text = "VOCÊ NÃO!";
+            }
+            else
+            {
+                resultLabel.text = "VOCÊ GANHOU!";
+            }
         }
         else
         {
-            statusText.text = DuelGame.CanFight ? "Batalha em andamento" : "Esperando desafiante";
+            if (DuelGame.CanFight == true)
+            {
+                statusText.text = "Batalha em andamento";
+            }
+            else
+            {
+                statusText.text = "Esperando desafiante";
+            }
         }
     }
 }

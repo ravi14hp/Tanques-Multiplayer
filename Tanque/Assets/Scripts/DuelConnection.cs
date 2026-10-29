@@ -13,8 +13,10 @@ public class DuelConnection : MonoBehaviour
 
     public async void JoinRoom()
     {
-        if (isConnecting || runner.IsRunning)
+        if (isConnecting == true || runner.IsRunning == true)
+        {
             return;
+        }
 
         if (string.IsNullOrWhiteSpace(roomNameInput.text))
         {
@@ -26,19 +28,23 @@ public class DuelConnection : MonoBehaviour
         statusText.text = "Criando seu avatar";
         runner.ProvideInput = false;
 
-        var result = await runner.StartGame(new StartGameArgs
-        {
-            GameMode = GameMode.Shared,
-            SessionName = roomNameInput.text,
-            PlayerCount = 2,
-            SceneManager = GetComponent<NetworkSceneManagerDefault>()
-        });
+        StartGameArgs argumentos = new StartGameArgs();
+        argumentos.GameMode = GameMode.Shared;
+        argumentos.SessionName = roomNameInput.text;
+        argumentos.PlayerCount = 2;
+        argumentos.SceneManager = GetComponent<NetworkSceneManagerDefault>();
+
+        StartGameResult resultado = await runner.StartGame(argumentos);
 
         isConnecting = false;
 
-        if (result.Ok)
+        if (resultado.Ok == true)
+        {
             menuPanel.SetActive(false);
+        }
         else
-            statusText.text = "Erro: " + result.ShutdownReason;
+        {
+            statusText.text = "Erro: " + resultado.ShutdownReason;
+        }
     }
 }

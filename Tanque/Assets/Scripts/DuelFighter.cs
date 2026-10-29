@@ -20,34 +20,61 @@ public class DuelFighter : NetworkBehaviour
     {
         body = GetComponent<Rigidbody2D>();
 
-        body.bodyType = HasStateAuthority ? RigidbodyType2D.Dynamic : RigidbodyType2D.Kinematic;
+        if (HasStateAuthority == true)
+        {
+            body.bodyType = RigidbodyType2D.Dynamic;
 
-        if (HasStateAuthority)
-            PlayerIndex = (byte)(Runner.IsSharedModeMasterClient ? 0 : 1);
+            if (Runner.IsSharedModeMasterClient == true)
+            {
+                PlayerIndex = 0;
+            }
+            else
+            {
+                PlayerIndex = 1;
+            }
+        }
+        else
+        {
+            body.bodyType = RigidbodyType2D.Kinematic;
+        }
 
         UpdateColor();
     }
 
-    private void UpdateColor()
+    void UpdateColor()
     {
-        bodyRenderer.color = PlayerIndex == 0 ? player1Color : player2Color;
+        if (PlayerIndex == 0)
+        {
+            bodyRenderer.color = player1Color;
+        }
+        else
+        {
+            bodyRenderer.color = player2Color;
+        }
     }
 
-    private void Update()
+    void Update()
     {
-        if (HasStateAuthority && DuelGame.CanFight && Input.GetButtonDown("Fire1"))
-            Runner.Spawn(bulletPrefab, firePoint.position, firePoint.rotation);
+        if (HasStateAuthority == true && DuelGame.CanFight == true)
+        {
+            if (Input.GetButtonDown("Fire1"))
+            {
+                Runner.Spawn(bulletPrefab, firePoint.position, firePoint.rotation);
+            }
+        }
     }
 
     public override void FixedUpdateNetwork()
     {
-        if (!HasStateAuthority)
+        if (HasStateAuthority == false)
+        {
             return;
+        }
 
         float walk = 0;
         float turn = 0;
 
-        if (DuelGame.CanFight)
+        if (DuelGame.CanFight == true)
         {
             walk = Input.GetAxisRaw("Vertical");
             turn = Input.GetAxisRaw("Horizontal");

@@ -9,15 +9,31 @@ public class DuelSpawnManager : SimulationBehaviour, IPlayerJoined
     public void PlayerJoined(PlayerRef player)
     {
         if (player != Runner.LocalPlayer)
+        {
             return;
+        }
 
         bool isPlayer1 = Runner.IsSharedModeMasterClient;
 
-        if (isPlayer1)
+        if (isPlayer1 == true)
+        {
             Runner.Spawn(gamePrefab, Vector3.zero, Quaternion.identity);
+        }
 
-        Vector3 position = new Vector3(isPlayer1 ? -4 : 4, 0, 0);
-        Quaternion rotation = Quaternion.Euler(0, 0, isPlayer1 ? 0 : 180);
+        Vector3 position;
+        Quaternion rotation;
+
+        if (isPlayer1 == true)
+        {
+            position = new Vector3(-4, 0, 0);
+            rotation = Quaternion.Euler(0, 0, 0);
+        }
+        else
+        {
+            position = new Vector3(4, 0, 0);
+            rotation = Quaternion.Euler(0, 0, 180);
+        }
+
         Runner.Spawn(fighterPrefab, position, rotation);
     }
 }
